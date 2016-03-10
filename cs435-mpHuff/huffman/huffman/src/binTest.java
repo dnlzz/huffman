@@ -37,7 +37,13 @@ public class binTest {
 			int[] freq = new int[NUM_CHAR];
 			int[] charLocs = new int[bytes.length];
 			for (int i = 0; i < bytes.length; i++)
+				if (bytes[i] > 0)
 					freq[bytes[i]]++;
+				else {
+					byte b = bytes[i]; //element in the byte array read from stream
+					int d = b & 0xFF;
+					freq[d]++;
+				}
 
 			int z = 0;
 			for (int i=0; i < freq.length; i++) {
@@ -58,7 +64,7 @@ public class binTest {
 	        System.out.println("Before: " + bytes.length * 8 + " bits");
 	        
 	        for (int i = 0; i < bytes.length; i++) {
-	            
+	            if (bytes[i] > 0) {
 	        	String code = st[bytes[i]];
 	        	System.out.print(code + "  :  ");
 	               	 /* 
@@ -72,6 +78,7 @@ public class binTest {
 		                else throw new IllegalStateException("Illegal state");
 		            }
           */
+	            }
 	        }
 	        
 		} catch (IOException e) {
@@ -127,19 +134,20 @@ public class binTest {
 	
 	public static void main(String[] args) {
 
-		//for debug only
 		//need to use cmd line args***
-		encodeFile("prog2test.txt");
+		//encodeFile("prog2test.txt");
+		encodeFile("house-06.jpg");
 
 		/*
 		 *        
-		if      (args[0].equals("henc")) encodeFile(args[1]);
-        else if (args[0].equals("hdec")) decodeFile(args[1]);
-        else throw new IllegalArgumentException("Illegal command line argument");
+		if (args[0].equals("henc"))
+			encodeFile(args[1]);
+        else if (args[0].equals("hdec"))
+        	decodeFile(args[1]);
+        else
+        	throw new IllegalArgumentException("Illegal command line argument");
 		 * 
 		 * */
-//123
-
 	}
 
 
