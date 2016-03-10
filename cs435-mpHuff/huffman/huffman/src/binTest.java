@@ -40,7 +40,7 @@ public class binTest {
 				if (bytes[i] > 0)
 					freq[bytes[i]]++;
 				else {
-					byte b = bytes[i]; //element in the byte array read from stream
+					byte b = bytes[i];
 					int d = b & 0xFF;
 					freq[d]++;
 				}
@@ -63,10 +63,13 @@ public class binTest {
 
 	        System.out.println("Before: " + bytes.length * 8 + " bits");
 	        
+	        int count = 0;
+	        
 	        for (int i = 0; i < bytes.length; i++) {
 	            if (bytes[i] > 0) {
 	        	String code = st[bytes[i]];
 	        	System.out.print(code + "  :  ");
+	        	count += code.length();
 	               	 /* 
 		            for (int j = 0; j < code.length(); j++) {
 		                if (code.charAt(j) == '0') {
@@ -80,7 +83,7 @@ public class binTest {
           */
 	            }
 	        }
-	        
+	        System.out.println("\nAfter: " + count + " bits");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -135,8 +138,8 @@ public class binTest {
 	public static void main(String[] args) {
 
 		//need to use cmd line args***
-		//encodeFile("prog2test.txt");
-		encodeFile("house-06.jpg");
+		encodeFile("prog2test.txt");
+		//encodeFile("house-06.jpg");
 
 		/*
 		 *        
