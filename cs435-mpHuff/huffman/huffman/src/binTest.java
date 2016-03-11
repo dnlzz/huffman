@@ -31,6 +31,12 @@ public class binTest {
 
 	final static int NUM_CHAR = 256;
 
+	private static void decodeFile(String fn) {
+		
+		
+		
+	}
+	
 	private static void encodeFile(String fn) {
 		try {
 			byte[] bytes = Files.readAllBytes(Paths.get(fn));
