@@ -30,14 +30,36 @@ class Node implements Comparable<Node> {
 public class binTest {
 
 	final static int NUM_CHAR = 256;
-
-	private static void decodeFile(String fn) {
+	static Node root;
+	static String output;
+	
+	private static String decodeFile(String fn) {
+		String str = "";
 		
+		Node treeLoc;
 		
+		int idx = 0;
 		
+		while (idx < fn.length()) {
+			treeLoc = root;
+			while (true) {
+				if (treeLoc.isLeaf()) {
+					str += treeLoc.data;
+					break;
+				} else if (fn.charAt(idx) == '0') {
+					treeLoc = treeLoc.left;
+					idx++;
+				} else {
+					treeLoc = treeLoc.right;
+					idx++;
+				}
+			}
+		}
+		
+		return str;	
 	}
 	
-	private static void encodeFile(String fn) {
+	private static String encodeFile(String fn) {
 		try {
 			byte[] bytes = Files.readAllBytes(Paths.get(fn));
 			int[] freq = new int[NUM_CHAR];
@@ -59,7 +81,7 @@ public class binTest {
 				}
 			}
 			
-			Node root = buildMinHeap(charLocs, freq);
+			root = buildMinHeap(charLocs, freq);
 	        
 			String[] st = new String[NUM_CHAR];
 			
@@ -74,7 +96,8 @@ public class binTest {
 	        for (int i = 0; i < bytes.length; i++) {
 	            if (bytes[i] > 0) {
 	        	String code = st[bytes[i]];
-	        	System.out.print(code + "  :  ");
+	        	System.out.print(code);
+	        	output += code;
 	        	count += code.length();
 	               	 /* 
 		            for (int j = 0; j < code.length(); j++) {
@@ -90,9 +113,11 @@ public class binTest {
 	            }
 	        }
 	        System.out.println("\nAfter: " + count + " bits");
+	        
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return output;
 	}
 			
 
@@ -144,7 +169,9 @@ public class binTest {
 	public static void main(String[] args) {
 
 		//need to use cmd line args***
-		encodeFile("prog2test.txt");
+		String enc=encodeFile("prog2test.txt");
+		String dec = decodeFile(enc);
+		System.out.println(dec);
 		//encodeFile("house-06.jpg");
 
 		/*
