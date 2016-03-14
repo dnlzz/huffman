@@ -32,31 +32,13 @@ public class binTest {
 	final static int NUM_CHAR = 256;
 	static Node root;
 	static String output;
+	static String decOut;
 	
 	private static String decodeFile(String fn) {
-		String str = "";
+		decOut = "";
+		String outStr = traverse(root);
 		
-		Node treeLoc;
-		
-		int idx = 0;
-		
-		while (idx < fn.length()) {
-			treeLoc = root;
-			while (true) {
-				if (treeLoc.isLeaf()) {
-					str += treeLoc.data;
-					break;
-				} else if (fn.charAt(idx) == '0') {
-					treeLoc = treeLoc.left;
-					idx++;
-				} else {
-					treeLoc = treeLoc.right;
-					idx++;
-				}
-			}
-		}
-		
-		return str;	
+		return outStr;	
 	}
 	
 	private static String encodeFile(String fn) {
@@ -85,13 +67,14 @@ public class binTest {
 	        
 			String[] st = new String[NUM_CHAR];
 			
-	        buildCode(st, root, "");
+			buildCode(st, root, "");
 	        
 	        writeTree(root);
 
 	        System.out.println("Before: " + bytes.length * 8 + " bits");
-	        
+	        	        
 	        int count = 0;
+	        output="";
 	        
 	        for (int i = 0; i < bytes.length; i++) {
 	            if (bytes[i] > 0) {
@@ -121,6 +104,25 @@ public class binTest {
 	}
 			
 
+	public static String traverse (Node r){ // Each child of a tree is a root of its subtree.
+		
+		if (r.left != null){
+	        traverse (r.left);
+	    }
+		
+		if(r.data >0) {
+		    decOut+=r.data;
+		}
+		
+	    
+	    if (r.right != null){
+	        traverse (r.right);
+	    }
+	    
+	    return decOut;
+	}
+	
+	
     private static Node buildMinHeap(int[] charLocs, int[] freq) {
 
         // need to implement minHeap PQueue
@@ -139,7 +141,7 @@ public class binTest {
         while (pq.size() > 1) {
             Node left  = pq.poll();
             Node right = pq.poll();
-            Node parent = new Node(left.data + right.data, left.freq + right.freq, left, right);
+            Node parent = new Node('\0', left.freq + right.freq, left, right);
             pq.add(parent);
         }
         return pq.poll();
@@ -147,7 +149,7 @@ public class binTest {
 	
     private static void writeTree(Node x) {
         if (x.isLeaf()) {
-            //System.out.println(x.data + " : " + x.freq);
+            //System.out.println(x.data);
             return;
         }
         writeTree(x.left);
@@ -163,15 +165,16 @@ public class binTest {
         else {
             st[x.data] = s;
             
-        }        
+        }
     }
 	
 	public static void main(String[] args) {
 
 		//need to use cmd line args***
 		String enc=encodeFile("prog2test.txt");
+		System.out.println("ENC:  " + enc);
 		String dec = decodeFile(enc);
-		System.out.println(dec);
+		System.out.println("DEC:  " + dec);
 		//encodeFile("house-06.jpg");
 
 		/*
