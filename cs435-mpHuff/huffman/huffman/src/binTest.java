@@ -1,4 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.PriorityQueue;
@@ -119,13 +123,10 @@ public class binTest {
 		    
 		    if (tmp.isLeaf()) {
 		    	decOut+=charCodetoStr(tmp.data);
+		    	//decOut+=tmp.data;
 		    	tmp = root;
-		    }
-			
+		    }	
 		}
-		
-
-		
 	    
 	    return decOut;
 	}
@@ -182,20 +183,45 @@ public class binTest {
         }
     }
 	
+	private static void encFile(String fn) {
+		
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+	              new FileOutputStream("output.png.huf"), "utf-8"))) {
+	   writer.write(fn);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+		
+	}
+	
+	private static void decFile(String fn) {
+		
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+	              new FileOutputStream("output.png"), "utf-8"))) {
+	   writer.write(fn);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+		
+	}
+    
 	public static void main(String[] args) throws Exception {
 
 		//need to use cmd line args***
-		String enc=encodeFile("prog2test.txt");
-		//String enc =encodeFile("house-06.jpg");
-		System.out.println("ENC:  " + enc);
+		//String enc=encodeFile("prog2test.txt");
+		String enc =encodeFile("tux.png");
+		//System.out.println("ENC:  " + enc);
+		encFile(enc);
 		String dec = decodeFile(enc);
-		System.out.println("DEC:  " + dec);
-		
+		//System.out.println("DEC:  " + dec);
+		decFile(dec);
 
 		/*
 		 *        
-		if (args[0].equals("henc"))
+		if (args[0].equals("henc")) {
+			//need to save file extenstion and add .huf
 			encodeFile(args[1]);
+			}
         else if (args[0].equals("hdec"))
         	decodeFile(args[1]);
         else
@@ -203,6 +229,5 @@ public class binTest {
 		 * 
 		 * */
 	}
-
 
 }
