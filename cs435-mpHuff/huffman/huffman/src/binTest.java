@@ -35,12 +35,12 @@ public class binTest {
 	
 	private static String decodeFile(String fn) {
 		decOut = "";
-		String outStr = traverse(root);
+		String outStr = traverse(root, fn);
 		return outStr;	
 	}
 	
 
-	private static String encodeFile(String fn) {
+	private static String encodeFile(String fn) throws Exception {
 		try {
 			byte[] bytes = Files.readAllBytes(Paths.get(fn));
 			int[] freq = new int[NUM_CHAR];
@@ -103,20 +103,29 @@ public class binTest {
 	}
 			
 
-	public static String traverse (Node r){ // Each child of a tree is a root of its subtree.
+	public static String traverse (Node r, String fn){ // Each child of a tree is a root of its subtree.
 		
-		if (r.left != null){
-	        traverse (r.left);
-	    }
+		Node tmp = root;
 		
-		if(r.data > 0) {
-		    decOut+=charCodetoStr(r.data);
+		for (int i = 0; i < fn.length(); i++) {
+			
+			if (fn.charAt(i) == '0'){
+		        tmp = tmp.left;
+		    }		
+		    
+		    if (fn.charAt(i) == '1'){
+		    	tmp = tmp.right;
+		    }
+		    
+		    if (tmp.isLeaf()) {
+		    	decOut+=charCodetoStr(tmp.data);
+		    	tmp = root;
+		    }
+			
 		}
 		
-	    
-	    if (r.right != null){
-	        traverse (r.right);
-	    }
+
+		
 	    
 	    return decOut;
 	}
@@ -127,10 +136,11 @@ public class binTest {
 	}
 
 
-	private static Node buildMinHeap(int[] charLocs, int[] freq) {
+	private static Node buildMinHeap(int[] charLocs, int[] freq) throws Exception {
 
         // need to implement minHeap PQueue
-        PriorityQueue<Node> pq = new PriorityQueue<Node>();
+        //PriorityQueue<Node> pq = new PriorityQueue<Node>();
+		heapPQueue<Node> pq = new heapPQueue<Node>();
         
         int j = 0;
         for (char i = 0; i < NUM_CHAR; i++)
@@ -143,12 +153,12 @@ public class binTest {
         
         // merge two smallest trees
         while (pq.size() > 1) {
-            Node left  = pq.poll();
-            Node right = pq.poll();
+            Node left  = (Node) pq.remove();
+            Node right = (Node) pq.remove();
             Node parent = new Node('\0', left.freq + right.freq, left, right);
             pq.add(parent);
         }
-        return pq.poll();
+        return (Node) pq.remove();
     }
 	
     private static void writeTree(Node x) {
@@ -172,14 +182,15 @@ public class binTest {
         }
     }
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		//need to use cmd line args***
 		String enc=encodeFile("prog2test.txt");
+		//String enc =encodeFile("house-06.jpg");
 		System.out.println("ENC:  " + enc);
 		String dec = decodeFile(enc);
 		System.out.println("DEC:  " + dec);
-		//encodeFile("house-06.jpg");
+		
 
 		/*
 		 *        
