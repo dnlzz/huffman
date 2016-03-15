@@ -73,8 +73,6 @@ public class binTest {
 			buildCode(st, root, "");
 	        
 	        writeTree(root);
-
-	        System.out.println("Before: " + bytes.length * 8 + " bits");
 	        	        
 	        int count = 0;
 	        output="";
@@ -98,7 +96,8 @@ public class binTest {
           */
 	            }
 	        }
-	        System.out.println("\nAfter: " + count + " bits");
+	        System.out.println("Before: " + bytes.length * 8 + " bits");
+	        System.out.println("After: " + count + " bits");
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -224,6 +223,7 @@ public class binTest {
 			}
         else if (args[0].equals("hdec"))
         	decodeFile(args[1]);
+        	//need to delete .huf file after completion
         else
         	throw new IllegalArgumentException("Illegal command line argument");
 		 * 
