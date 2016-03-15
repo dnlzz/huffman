@@ -21,7 +21,6 @@ class Node implements Comparable<Node> {
 
 	@Override
 	public int compareTo(Node o) {
-		// TODO Auto-generated method stub
 		return this.freq - o.freq;
 	}
 }
