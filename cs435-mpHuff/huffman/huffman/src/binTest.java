@@ -37,10 +37,10 @@ public class binTest {
 	private static String decodeFile(String fn) {
 		decOut = "";
 		String outStr = traverse(root);
-		
 		return outStr;	
 	}
 	
+
 	private static String encodeFile(String fn) {
 		try {
 			byte[] bytes = Files.readAllBytes(Paths.get(fn));
@@ -110,8 +110,8 @@ public class binTest {
 	        traverse (r.left);
 	    }
 		
-		if(r.data >0) {
-		    decOut+=r.data;
+		if(r.data > 0) {
+		    decOut+=charCodetoStr(r.data);
 		}
 		
 	    
@@ -123,7 +123,12 @@ public class binTest {
 	}
 	
 	
-    private static Node buildMinHeap(int[] charLocs, int[] freq) {
+    private static String charCodetoStr(int data) {
+    	return Character.toString ((char) data);
+	}
+
+
+	private static Node buildMinHeap(int[] charLocs, int[] freq) {
 
         // need to implement minHeap PQueue
         PriorityQueue<Node> pq = new PriorityQueue<Node>();
